@@ -17,20 +17,28 @@ let tests =
             let expected = [[1L; 2L; 3L]; [5L; 6L; 7L]]
             Expect.equal result expected "Input should be parsed into correct ranges"
         
-        testTheory "isInvalidID returns false for valid IDs" [1L; 23L; 101L] <| fun id ->
-            let result = Day02.isInvalidID id
-            Expect.isFalse result "should be valid"
-
-        testTheory "isInvalidID returns true for invalid ID" [55L; 6464L; 123123L] <| fun id ->
-            let result = Day02.isInvalidID id
-            Expect.isTrue result "should be invalid"
-
         testTheory
-            "maxRepeatingPattern returns positive result for IDs with repeating patterns"
-            [12341234L; 123123123L; 1212121212L; 1111111L]
-             <| fun id ->
-                let result = Day02.maxRepeatingPatternCount id
-                Expect.isGreaterThan result 0 "should have repeating pattern"
+            "hasRepeatingPatternCount returns whether number of repeating patterns matches"
+            [12341234L, 2; 123123123L, 3; 1212121212L, 5; 1111111L, 7]
+             <| fun (id, count) ->
+                let result = Day02.hasRepeatingPatternCount count (id.ToString())
+                Expect.isTrue result (sprintf "%d should have %d repeating patterns" id count)
+
+        testTheory "hasTwiceRepeatingPattern returns false for IDs with no or many repetitions" [1L; 23L; 101L; 333L] <| fun id ->
+            let result = Day02.hasTwiceRepeatingPattern id
+            Expect.isFalse result "should not contain a repeating pattern"
+
+        testTheory "hasTwiceRepeatingPattern returns true for IDs with double patterns" [55L; 6464L; 123123L; 222222L] <| fun id ->
+            let result = Day02.hasTwiceRepeatingPattern id
+            Expect.isTrue result "should contain a doubly repeating pattern"
+        
+        testTheory "hasRepeatingPattern returns false for IDs without repeating patterns" [1L; 23L; 4567L; 123321L] <| fun id ->
+            let result = Day02.hasRepeatingPattern id
+            Expect.isFalse result "should not contain a repeating pattern"
+
+        testTheory "hasRepeatingPattern returns true for IDs with repeating patterns" [11L; 1212L; 123123L; 999999L] <| fun id ->
+            let result = Day02.hasRepeatingPattern id
+            Expect.isTrue result "should contain a repeating pattern"
 
         testCase "sumRepeatedTwice returns 0 for range with only valid IDs" <| fun _ ->
             let range = seq { 1698522L..1698528L }
@@ -60,11 +68,12 @@ let tests =
         testCase "part1 processes sample input correctly" <| fun _ ->
             let input = System.IO.File.ReadAllText("2025/Samples/02/sample.txt").TrimEnd()
             let result = Day02.part1 input
-            Expect.equal result "1227775554" "Part 1 should return 1227775554 for the sample input"
+            let expected = 1227775554L
+            Expect.equal result expected (sprintf "Part 1 should return %d for the sample input" expected)
 
         testCase "part2 processes sample input correctly" <| fun _ ->
             let input = System.IO.File.ReadAllText("2025/Samples/02/sample.txt").TrimEnd()
             let result = Day02.part2 input
-            let expected = "4174379265"
-            Expect.equal result expected (sprintf "Part 2 should return %s for the sample input" expected)
+            let expected = 4174379265L
+            Expect.equal result expected (sprintf "Part 2 should return %d for the sample input" expected)
     ]
