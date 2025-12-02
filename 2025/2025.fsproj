@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Include="Solutions\Day??.fs" />
+    <Compile Include="Solutions/Day*.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>
 
