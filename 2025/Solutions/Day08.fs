@@ -34,6 +34,12 @@ module Day08 =
                     yield { box0 = box0; box1 = box1; distance = distance }
         ]
         unordered |> List.sortBy _.distance
+    
+    let prepare (positions: Position list) =
+        let connections = buildConnections positions
+        let circuitIndex = Array.init positions.Length id
+        let circuitMembers = Array.init positions.Length Set.singleton
+        connections, circuitIndex, circuitMembers
 
     let join (connection: Connection) (circuitIndex: int array) (circuitMembers: Set<int> array) =
         let targetCircuit = circuitIndex[connection.box0]
@@ -44,10 +50,11 @@ module Day08 =
             circuitMembers[targetCircuit] <- circuitMembers[targetCircuit] |> Set.union circuitMembers[sourceCircuit]
             circuitMembers[sourceCircuit] <- Set.empty
         
+    let circuitCount (circuitMembers: Set<int> array) =
+        circuitMembers |> Seq.filter (fun m -> m.Count > 0) |> Seq.length
+
     let part1 (n: int) (positions: Position list) : int =
-        let connections = buildConnections positions
-        let circuitIndex = Array.init positions.Length id
-        let circuitMembers = Array.init positions.Length Set.singleton
+        let connections, circuitIndex, circuitMembers = prepare positions
         for i in 0 .. n - 1 do
             join (connections[i]) circuitIndex circuitMembers
 
@@ -58,7 +65,18 @@ module Day08 =
         |> Seq.take 3
         |> Seq.fold (*) 1
         
+    let part2 (positions: Position list) : int64 =
+        let connections, circuitIndex, circuitMembers = prepare positions
+        let mutable c = 0
+        while circuitCount circuitMembers > 1 do
+            join (connections[c]) circuitIndex circuitMembers
+            c <- c + 1
+        let x0, _, _ = positions[connections[c - 1].box0]
+        let x1, _, _ = positions[connections[c - 1].box1]
+        x0 * x1
+        
     let run =
         let lines = System.IO.File.ReadAllLines "2025/Inputs/08/input.txt"
         let positions = parsePositions lines
         printfn $"Day 08 - Part 1: %d{part1 1000 positions}"
+        printfn $"Day 08 - Part 2: %d{part2 positions}"

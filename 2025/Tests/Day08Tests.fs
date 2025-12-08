@@ -25,4 +25,8 @@ let tests =
                 let result = Day08.part1 iterations samplePositions
                 let expected = List.fold (*) 1 sizes
                 Expect.equal result expected $"Expected correct largest circuits to have {sizes}"
+        
+        testCase "part2 multiplies x coordinates of connection that achieves single circuit" <| fun _ ->
+            let result = Day08.part2 samplePositions
+            Expect.equal result 25272L "Expected correct result"
     ]
