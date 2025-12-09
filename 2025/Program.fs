@@ -8,5 +8,6 @@ let main argv =
     | "3" -> Day03.run
     | "4" -> Day04.run
     | "8" -> Day08.run
+    | "9" -> Day09.run
     | day -> printfn $"Day %s{day} not implemented yet."
     0
