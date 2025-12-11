@@ -2,7 +2,6 @@
 
 [<EntryPoint>]
 let main argv =
-    let part = if argv.Length = 1 then None else Some argv[1]
     match argv[0] with
     | "1" -> Day01.run
     | "2" -> Day02.run
@@ -10,6 +9,7 @@ let main argv =
     | "4" -> Day04.run
     | "8" -> Day08.run
     | "9" -> Day09.run
-    | "10" -> Day10.run part
+    | "10" -> Day10.run Some("1")
+    | "11" -> Day11.run
     | day -> printfn $"Day %s{day} not implemented yet."
     0
