@@ -1,8 +1,8 @@
 namespace _2025.Solutions
 
 module Measure =
-    let measure (fn) arg =
+    let measure (computation: unit -> 'a) =
         let stopWatch = System.Diagnostics.Stopwatch.StartNew()
-        let result = fn arg
+        let result = computation ()
         stopWatch.Stop()
         result, stopWatch.Elapsed.TotalMilliseconds

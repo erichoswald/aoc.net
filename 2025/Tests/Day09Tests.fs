@@ -16,23 +16,29 @@ let sampleLines = [|
 
 [<Tests>]
 let tests =
-    let coordinates = Day09.parseCoordinates sampleLines
+    let coordinates = Day09.parseTiles sampleLines
 
     testList "Day 09 Tests" [
-        testCase "parsed coordinates contain expected values" <| fun _ ->
+        testCase "parsed tiles contain expected values" <| fun _ ->
             Expect.equal coordinates.Length 8 "Expected 8 coordinates"
-            Expect.equal coordinates[0] (7L, 1L) "Expected (7, 1) as first coordinate"
-            Expect.equal coordinates[7] (7L, 3L) "Expected (7, 3) as last coordinate"
+            Expect.equal coordinates[0] { X = 7L; Y = 1L } "Expected (7, 1) as first coordinate"
+            Expect.equal coordinates[7] { X = 7L; Y = 3L } "Expected (7, 3) as last coordinate"
         
         testCase "area computes rectangular area" <| fun _ ->
-            let corner = 9L,7L
-            let opposite = 11L,1L
-            let result = Day09.area corner opposite
+            let corner: Day09.Tile = { X = 9L; Y = 7L }
+            let opposite: Day09.Tile = { X = 11L; Y = 1L }
+            let rect = Day09.rectangle corner opposite
+            let result = Day09.area rect
             let expected = 21L
             Expect.equal result expected $"Expected area of {expected}"
         
-        testCase "maximum rectangle in sample coordinates has area 50" <| fun _ ->
+        testCase "maximum rectangle in sample tiles has area 50" <| fun _ ->
             let result = Day09.largestRectangleArea coordinates
             let expected = 50L
             Expect.equal result expected $"Expected largest rectangle area of {expected}"
+        
+        testCase "largestRectangleAreaInsidePolygon in sample returns 24" <| fun _ ->
+            let result = Day09.largestRectangleAreaInsidePolygon coordinates
+            let expected = 24L
+            Expect.equal result expected $"Expected largest area inside polygon of {expected}"
     ]
