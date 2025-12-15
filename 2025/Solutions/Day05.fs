@@ -18,7 +18,7 @@ module Day05 =
         first <= id && id <= last
 
     let isFresh ranges id =
-        ranges |> Array.exists (fun range -> isInRange range id)
+        ranges |> Seq.exists (fun range -> isInRange range id)
         
     let mergeRanges ranges =
         let rec merge (merged: (int64 * int64) list) (range: int64 * int64) =
@@ -43,12 +43,15 @@ module Day05 =
 
         ranges |> Array.fold merge []
     
+    let countFreshIds ranges ids =
+        ids |> Array.filter (isFresh ranges) |> _.Length
+
     let sumRanges ranges =
         ranges |> Seq.map (fun (first, last) -> last - first + 1L) |> Seq.sum
 
     let run =
         let ranges, ids = parseInput (System.IO.File.ReadLines("2025/Inputs/05/input.txt"))
-        let result, millis = Measure.measure (fun () -> ids |> Array.filter (isFresh ranges) |> Array.length)
+        let result, millis = Measure.measure (fun () -> countFreshIds ranges ids)
         printfn $"Day 05 - Part 1: %d{result} (took %.3f{millis} ms)"
         let result, millis = Measure.measure (fun () -> mergeRanges ranges |> sumRanges)
         printfn $"Day 05 - Part 2: %d{result} (took %.3f{millis} ms)"

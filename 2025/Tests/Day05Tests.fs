@@ -23,6 +23,10 @@ let tests =
             let ranges = parseInput |> fst
             Expect.equal (Day05.isFresh ranges id) expected $"Expected ${id} to have freshness %b{expected}"
         
+        testCase "countFreshIds counts fresh ids" <| fun _ ->
+            let ranges, ids = parseInput
+            Expect.equal (Day05.countFreshIds ranges ids) 3 "Expected 3 fresh ids"
+            
         testCase "mergeRanges merges sample ranges" <| fun _ ->
             let ranges = parseInput |> fst
             let result = Day05.mergeRanges ranges
