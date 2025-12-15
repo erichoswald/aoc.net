@@ -22,4 +22,14 @@ let tests =
         testTheory "isFresh determines freshness correctly" [1, false; 5, true; 17, true] <| fun (id, expected) ->
             let ranges = parseInput |> fst
             Expect.equal (Day05.isFresh ranges id) expected $"Expected ${id} to have freshness %b{expected}"
+        
+        testCase "mergeRanges merges sample ranges" <| fun _ ->
+            let ranges = parseInput |> fst
+            let result = Day05.mergeRanges ranges
+            Expect.equal result [3L, 5L; 10L, 20L] "Expected merged ranges to be [3, 5; 10, 20]"
+        
+        testCase "sumRanges sums sample ranges" <| fun _ ->
+            let ranges = parseInput |> fst
+            let result = Day05.mergeRanges ranges |> Day05.sumRanges
+            Expect.equal result 14 "Expected sum of ranges to be 14"
     ]
