@@ -8,6 +8,7 @@ let main argv =
     | "3" -> Day03.run
     | "4" -> Day04.run
     | "5" -> Day05.run
+    | "6" -> Day06.run
     | "8" -> Day08.run
     | "9" -> Day09.run
     | "10" -> Day10.run
